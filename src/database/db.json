@@ -182,22 +182,30 @@
     {
       "id": "ad75d475-ac57-44f4-a02a-8f6def58ff56",
       "workout": "4a3d9aaa-608c-49a7-a004-66305ad4ab50",
-      "record": "160 reps"
+      "record": "160 reps",
+      "memberId": "11817fb1-03a1-4b4a-8d27-854ac893cf41",
+      "member": "/members/11817fb1-03a1-4b4a-8d27-854ac893cf41"
     },
     {
       "id": "0bff586f-2017-4526-9e52-fe3ea46d55ab",
       "workout": "d8be2362-7b68-4ea4-a1f6-03f8bc4eede7",
-      "record": "7:23 minutes"
+      "record": "7:23 minutes",
+      "memberId": "11817fb1-03a1-4b4a-8d27-854ac893cf41",
+      "member": "/members/11817fb1-03a1-4b4a-8d27-854ac893cf41"
     },
     {
       "id": "365cc0bb-ba8f-41d3-bf82-83d041d38b82",
       "workout": "a24d2618-01d1-4682-9288-8de1343e53c7",
-      "record": "358 reps"
+      "record": "358 reps",
+      "memberId": "11817fb1-03a1-4b4a-8d27-854ac893cf41",
+      "member": "/members/11817fb1-03a1-4b4a-8d27-854ac893cf41"
     },
     {
       "id": "62251cfe-fdb6-4fa6-9a2d-c21be93ac78d",
       "workout": "4a3d9aaa-608c-49a7-a004-66305ad4ab50",
-      "record": "145 reps"
+      "record": "145 reps",
+      "memberId": "11817fb1-03a1-4b4a-8d27-854ac893cf41",
+      "member": "/members/11817fb1-03a1-4b4a-8d27-854ac893cf41"
     }
   ]
 }
