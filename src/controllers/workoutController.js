@@ -2,7 +2,6 @@ const workoutService = require("../services/workoutService");
 
 const getAllWorkouts = (req, res) => {
   const { mode, equipment, length, page, sort } = req.query;
-  console.log(req.query);
   try {
     const allWorkouts = workoutService.getAllWorkouts({ mode, equipment, length, page, sort });
     res.send({ status: 'OK', data: allWorkouts })
@@ -22,7 +21,7 @@ const getOneWorkout = (req, res) => {
       .status(400)
       .send({
         status: 'FAILED',
-        data: { error: "Parameter ':/workId' cannot be empty"}
+        data: { error: "Parameter '/:workoutId' cannot be empty" }
       })
   }
   try {
@@ -82,7 +81,7 @@ const updateOneWorkout = (req, res) => {
       .status(400)
       .send({
         status: 'FAILED',
-        data: { error: error?.message || error }
+        data: { error: "Parameter '/:workoutId' cannot be empty" }
       });
   }
   try {
@@ -104,7 +103,7 @@ const deleteOneWorkout = (req, res) => {
       .status(400)
       .send({
         status: 'FAILED',
-        data: { error: error?.message || error }
+        data: { error: "Parameter '/:workoutId' cannot be empty" }
       });
   }
   try {

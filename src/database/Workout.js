@@ -79,7 +79,7 @@ const createNewWorkout = (newWorkout) => {
   }
 }
 
-const updateOneWorkout = (workoutId) => {
+const updateOneWorkout = (workoutId, changes) => {
   try{
     const indexForUpdate = DB.workouts.findIndex(workout => workout.id === workoutId);
     if (indexForUpdate == -1) {
