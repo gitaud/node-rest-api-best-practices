@@ -1,0 +1,102 @@
+1. Versioning
+=======================================================
+Versioning provides more options to clients who may not want to migrate to newer versions.
+The simplest way to implement versioning is to use routes eg:
+
+/api/v1 
+/api/v2
+
+The main advantage is the ability to use a new version without disrupting users. 
+You have to think about versioning before implementing your application.
+In this case, we use folders to separate versions, with foldernames such as v1 for the respective version.
+With growing complexity, we may need to move our controllers and services folders to the respective version folder to allow encapsulation.
+
+
+2. Name Resources in Plural
+=========================================================
+Your API is used by other humans and should be precise. For instance, using the route 'api/v1/workout' may give the impression that we are referring to a single workout. This instance may be misleading. 
+Instead, using the route 'api/v1/workouts' informs the user that the route points to multiple workouts. 
+
+
+3. Accept and Respond with data in JSON Format
+========================================================
+JSON (JavaScript Object Notation) is a standardized format. Nevertheless, JSON is not tied to JavaScript alone. Due to its standardization, APIs should accept and respond with data in JSON format. 
+In the project, we use the same name for service and controller methods. It is a good practice so you have a connection with those. 
+
+4. Respond with Standard HTTP Codes
+========================================================
+In a perfect world, apps run smoothly without encountering any errors. But really, errors arise, from both human and technical perspectives.
+Our API should handle cases that might throw errors or go wrong. This practice hardens our API.
+Returning proper HTTP codes helps the consumer and the engineer who built the API to identify problems quickly. 
+
+5. Avoid Verbs in Endpoint Names
+=========================================================
+Generally, each URL should point towards a resource. Nothing more, nothing less. Using a verb inside a URL shows a certain behavior which a resource itself cannot have. 
+
+// Current implementations (without verbs)
+GET "/api/v1/workouts" 
+GET "/api/v1/workouts/:workoutId" 
+POST "/api/v1/workouts" 
+PATCH "/api/v1/workouts/:workoutId" 
+DELETE "/api/v1/workouts/:workoutId"  
+
+// Implementation using verbs 
+GET "/api/v1/getAllWorkouts" 
+GET "/api/v1/getWorkoutById/:workoutId" 
+CREATE "/api/v1/createWorkout" 
+PATCH "/api/v1/updateWorkout/:workoutId" 
+DELETE "/api/v1/deleteWorkout/:workoutId"
+
+Having a completely different URL for every behavior can quickly become confusing and unnecessarily complex pretty fast. The HTTP verb itself already indicates the action. The current implementation is already cleaner because we've only used two different URLs and the actual verb is handled via the HTTP verb and the corresponding request payload. 
+
+6. Group Associated Resources Together (Logical Nesting)
+=========================================================
+When designing an API, there might be cases where you have resources that are associated with others. It's a good practice to group them together into one endpoint and nest them properly. 
+
+
+In this API, we have a list of members signed up in our CrossFit box ("box" is the name for a CrossFit gym). To motivate members, we track the overall box records for each workout. 
+For example, there is a workout where you have to do a certain order of exercises as quickly as possible. 
+We record the times for all members to have a list of the time for each member who has completed this workout. 
+
+Now, the frontend needs an endpoint that responds with all records for a specific workout in order to display it in the UI. 
+The workouts, the members, and the records are stored in different places inside the database. So what we need here is a box (records) inside another box (workouts).
+
+The URI for that endpoint will be /api/v1/workouts/:workoutId/records. 
+This is a good practice to allow logical nesting of URLs. The URL itself doesn't necessarily have to mirror the database structure.
+
+The rule of thumb here is to go three levels deep at a maximum. 
+
+Imagine the frontend also needs an endpoint to get information about which member exactly holds the current record and wants to receive metadata about them. 
+Of course we could implement the following URI:
+
+GET /api/v1/workouts/:workoutId/records/members/:memberId
+
+The endpoint now becomes less manageable he more nesting we add to it. 
+Therefore it is a good practice to store the URI to receive information about a member directly into the record.
+
+Consider the following in the database:
+
+{
+  "workouts": [ ...
+  ],
+  "members": [ ...
+  ],
+  "records": [ ... {
+      "id": "ad75d475-ac57-44f4-a02a-8f6def58ff56",
+      "workout": "4a3d9aaa-608c-49a7-a004-66305ad4ab50",
+      "record": "160 reps",
+      "memberId": "11817fb1-03a1-4b4a-8d27-854ac893cf41",
+      "member": "/members/:memberId"
+    },
+  ]
+}
+
+BY adding the "memberId" and "member" to the records inside the database, we gain the advantage of not having to nest deeper our existing endpoint. 
+
+The frontend just needs to call GET /api/v1/workouts/:workoutId/records and receives automatically all records connected with this workout. 
+On top of that it gets the member id and the endpoint to fetch information about that member.
+
+Of course, this only works if we can handle requests to "/members/:memberId". 
+
+7. Integrate filtering, sorting & pagination
+=========================================================
