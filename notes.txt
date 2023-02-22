@@ -100,3 +100,24 @@ Of course, this only works if we can handle requests to "/members/:memberId".
 
 7. Integrate filtering, sorting & pagination
 =========================================================
+API performance is a key factor to consider. 
+Filtering and pagination are important. 
+Filtering enables the user to extract specific data. 
+Pagination breaks data into multiple 'pages'. 
+Sorting is complex, hence it is best to send sorted data to the client. 
+For example, to fetch workouts where the rep mode is 'As Many Rounds As Possible' (AMRAP), the route would look like this:
+
+/api/v1/workouts?mode=amrap
+
+We have to handle and accept queries in our get route. 
+
+The parameters for sorting and pagination follow the same philosophy. Let's look at a few features we could possibly implement:
+
+Receive all workouts that require a barbell: /api/v1/workouts?equipment=barbell
+Get only 5 workouts: /api/v1/workouts?length=5
+When using pagination, receive the second page: /api/v1/workouts?page=2
+Sort the workouts in the response in descending order by their creation date: /api/v1/workouts?sort=-createdAt
+You can also combine the parameters, to get the last 10 updated workouts for example: /api/v1/workouts?sort=-updatedAt&length=10
+
+8. Use Data Caching for performance improvements
+==================================================

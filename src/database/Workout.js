@@ -1,9 +1,47 @@
 const DB = require("./db.json");
 const { saveToDatabase } = require("./utils");
 
-const getAllWorkouts = () => {
+const getAllWorkouts = (filterParams) => {
   try {
-    return DB.workouts;
+    let workouts = DB.workouts;
+    if (filterParams.mode) {
+      workouts = workouts.filter(workout => 
+        workout.mode.toLowerCase().includes(filterParams.mode)
+      );
+    }
+    if (filterParams.equipment) {
+      workouts = workouts.filter(workout => 
+        workout.equipment.indexOf(filterParams.equipment) !== -1  
+      );
+    }
+    
+    if (filterParams.sort) {
+      if (filterParams.sort === "-createdAt") {
+        workouts = workouts.sort((a, b) => 
+          new Date(b.createdAt) - new Date(a.createdAt)
+        )
+      } else if (filterParams.sort === "-updatedAt") {
+        workouts = workouts.sort((a, b) => 
+          new Date(b.updatedAt) - new Date(a.updatedAt)
+        )
+      }
+    }
+
+    if (filterParams.page) {
+      let indx = Number(filterParams.page) * 10;
+      if (indx < workouts.length && (indx + 10) < workouts.length) {
+        workouts = workouts.slice(indx, indx + 10);
+      } else if (indx < workouts.length) {
+        workouts = workouts.slice(indx, workouts.length - 1);
+      } else {
+        workouts = workouts.slice(workouts.length - 11, workouts.length - 1);
+      }
+    }
+    
+    if (filterParams.length) {
+      workouts = workouts.slice(0, Number(filterParams.length));
+    }
+    return workouts;
   } catch (error) {
     throw { status: 500, message: error };
   }
