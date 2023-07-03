@@ -19,10 +19,10 @@ const getOneMember = (memberId) => {
   }
 }
 
-const createNewMember = (newMember) => {
+const createNewMember = (member) => {
   const newMember = {
     id: uuid(),
-    ...newMember,
+    ...member,
     createdAt: new Date().toLocaleDateString("en-us", { timezone: "UTC"}),
     updatedAt: new Date().toLocaleTimeString("en-us", { timezone: "UTC"}),
   };
